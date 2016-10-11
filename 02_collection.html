@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script src="underscore.js"></script>
+<script>
+	var re;
+	re = _.map({a:1,b:2}, _.identify);
+	console.log(re); //값만 리턴
+	
+	re = _.map({a:1,b:2}, function(v,k){
+		return [k,v];
+	})
+	console.log(re); //json -> array[][]
+	
+	re = _.map({a:1,b:2}, function(v,k,coll){ //coll은 collection을 의미
+		return [k,v,_.keys(coll)];
+	})
+	console.log(re); //json -> array[][] with keys
+	
+	re = _.find(['a','b',3,'d'], _.isNumber); //_.find는 찬반형을 인자로 받아 true인것만 찾아줌
+	console.log(re);
+
+	re = _.reject(['a','b',3,'d'], _.isNumber); //_.find와 정반대로 동작
+	console.log(re);
+
+	//찬반형을 인자로 받아 주어진 찬반형 명제 결과를 반전시키는 함수를 반환함
+	function complement(pred){
+		return function(){
+			return !pred.apply(null, _.toArray(arguments));
+		};
+	}
+	
+	re = _.filter(['a','b',3,'d'], complement(_.isNumber));
+	console.log(re);
+	
+	//찬반형 리턴값이 모두 참이면 true
+	re = _.all([1,2,3,4], _.isNumber);
+	console.log(re);
+	
+	//하나라도 참이면 true
+	re = _.any([1,2,'c',4], _.isString);
+	console.log(re);
+	
+	var people = [{name:'Rick', age:30},{name:'Jaka', age:24}];
+	
+	//컬렉션과 함수를 인자로 받고, 함수의 조건에 따라 정렬된 컬렉션을 반환함 
+	re = _.sortBy(people, function(p){return p.age});
+	console.log(re);
+	
+	var albums = [{title:"Bloody", genre:"Metal"},{title:"Sientist", genre:"Dub"},{title:"Undertow", genre:"Metal"}];
+	
+	//컬렉션과 함수를 인자로 받아 함수가 반환한 키 값과 일치하는 객체와 관련값을 반환함 
+	re = _.groupBy(albums, function(a){return a.genre});
+	console.log(re);
+	
+	//인자로 받은 함수가 반환한 키 값과 일치하는 객체의 수를 반환함 
+	re = _.countBy(albums, function(a){return a.genre});
+	console.log(re);
+</script>
+</head>
+<body>
+
+</body>
+</html>

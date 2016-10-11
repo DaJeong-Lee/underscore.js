@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script src="underscore.js"></script>
+<script>
+	var re;
+	var zombie = {name:"Bub", film:"Day of the Dead"};
+	
+	console.log(_.keys(zombie));
+	console.log(_.values(zombie));
+	
+	var books = [{title:"a", author:"Anthony"},{title:"b", author:"Anthony2"},{title:"c"}];
+                         
+	//객체배열과 문자열을 인자로 받아 배열 내의 객체 중 문자열 키와 일치하는 모든 객체의 값을 반환함 
+	console.log(_.pluck(books, 'author'));
+
+	//객체를 인자로 받아서 중첩 배열로 변환해서 반환함
+	console.log(_.pairs(zombie));
+	
+	//중첩배열을 새 객체로 다시 변환
+	console.log(_.object(_.pairs(zombie)));
+	
+	//키와 값을 변환
+	console.log(_.invert(zombie));
+	
+	//특정값을 객체에 추가하거나 객체에서 제거하는 함수 
+	re = _.pluck(_.map(books, function(obj){return _.defaults(obj, {author:'unknown'})}), 'author');
+	console.log(re);
+	
+	//인자값에 따라 객체의 값을 걸러내는 함수 
+	re = _.omit(zombie, 'name');
+	console.log(re);
+	
+	//인자값에 따라 객체의 값을 뽑아내는 함수 
+	re = _.pick(zombie, 'name');
+	console.log(re);
+	
+	//객체배열과 조건을 받아서 조건 키에 맞는 첫번째 객체를 반환 
+	re = _.findWhere(books, {title:"b"});
+	console.log(re);
+	
+	//객체배열과 조건을 받아서 조건 키에 맞는 모든 객체를 배열로 반환 
+	re = _.where(books, {title:"b"});
+	console.log(re);
+	
+</script>
+</head>
+<body>
+
+</body>
+</html>
