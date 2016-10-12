@@ -3,9 +3,85 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+<script src="underscore.js"></script>
+<script>
+	var library = [{title:'SICP',isbn:123123,ed:1}
+					,{title:'SICP2',isbn:10023123,ed:2}
+					,{title:'SICP3',isbn:123333123,ed:1}];
+	
+	//select title from library
+	console.log(_.pluck(library, 'title'));
+	//-> pluck도 좋지만 문제는 테이블 형태가 깨진다는 점~ 
+	
+	//아래처럼하면 테이블 형태도 유자하면서 select 할 수 있다.
+	function existy(x) { return x != null };
+	function cat() {
+	  var head = _.first(arguments);
+	  if (existy(head))
+	    return head.concat.apply(head, _.rest(arguments));
+	  else
+	    return [];
+	}
+	
+	function construct(head, tail) {
+	  return cat([head], _.toArray(tail));
+	}
+	
+	function project(table, keys){
+		return _.map(table, function(obj){
+			return _.pick.apply(null, construct(obj, keys));
+		});
+	}
+	
+	var editionResult = project(library, ['title']);
+	console.log(editionResult);
+	
+	//select ed as edition from library; 구현
+	function rename(obj, newNames){
+		return _.reduce(newNames, function(o, nu, old){
+			if(_.has(obj, old)){
+				o[nu] = obj[old];
+				return o;
+			}else{
+				return o;
+			}
+		}, _.omit.apply(null, construct(obj, _.keys(newNames))));
+	}
+	
+	//a가 AAA로 rename 되었음
+	console.log(rename({a:1,b:2},{'a':'AAA'}));
+	
+	//rename을 사용해서 여러 row(테이블)을 rename 할 수 있다.
+	function as(table, newNames){
+		return _.map(table, function(obj){
+			return rename(obj, newNames);
+		});
+	}
+	
+	//fro ed to edition renamed
+	console.log(as(library, {ed:'edition'}));
+	
+	function truthy(x) { return (x !== false) && existy(x) };
+	
+	//where절 구현
+	function restrict(table, pred){
+		return _.reduce(table, function(newTable, obj){
+			if(truthy(pred(obj)))
+				return newTable;
+			else
+				return _.without(newTable, obj);
+		}, table);
+	}
+	
+	var re = restrict(library, function(book){
+		return book.ed > 1 ; //where 조건 
+	});
+	
+	console.log(re);
+</script>
 </head>
 <body>
- p.73~ 
+ 
 
 </body>
 </html>
