@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script src="underscore.js"></script>
+<script>
+	// 객체의 정확성을 검증하는 기능 구현
+	
+	//찬반형 함수들(validators) 인자로 받아 검증함수를 반환하는 함수 
+	function checker(){
+		var validators = _.toArray(arguments);
+		
+		return function(obj){
+			return _.reduce(validators, function(errs, check){
+				if(check(obj))
+					return errs;
+				else
+					return _.chain(errs).push(check.message).value();
+			},[]);
+		};
+	}
+	
+	function always(VALUE) {
+	  return function() {
+	    return VALUE;
+	  };
+	};
+		
+	var alwaysPasses = checker(always(true), always(true));
+	console.log(alwaysPasses());
+	
+	var fails = always(false);
+	fails.message = "a failure in life";
+	var alwaysFails = checker(fails);
+	
+	console.log(alwaysFails({}));
+	
+ 	//vaildator(찬반형 함수) 구현
+ 	function validator(message, fun) {
+	  var f = function(/* args */) {
+	    return fun.apply(null, arguments);
+	  };
+	
+	  f['message'] = message;
+	  return f;
+	}
+ 	
+ 	//validator 활용
+ 	var gonnaFail = checker(validator("OMG!", always(false)));
+ 	console.log(gonnaFail(false));
+ 	
+	
+</script>
+</head>
+<body>
+</body>
+</html>
