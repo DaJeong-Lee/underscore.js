@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script src="underscore.js"></script>
+<script>
+/*
+ 1. curry의 기능
+  1) 함수를 인자로 받는다.
+  2) 한개의 파라미터를 갖는 함수를 반환한다.
+  -> 커링은 함수를 이용해서 우측(좌측)인자를 고정(무시)시켜서 함수의 행동을 제어할 수 있다.
+ */
+ 
+function curry2(fun){
+	return function(secondArg){
+		return function(firstArg){
+			return fun(firstArg, secondArg);
+		}
+	}	  
+}
+  
+function div(n,d){
+	return n/d;
+}
+
+//div 인자 중 d를 10으로  고정시킴 
+var div10 = curry2(div)(10);
+console.log(div10(60));
+
+/*
+  2. 부분적용 함수 
+   1) 커링은 커링(3)(2)처럼 한번에 한개의 인자만 처리하지만
+      부분적용 함수는 부분함수(2,3)처럼 한번에 여러 인자를 받아 이후 실행시에 나머지 인자를 
+      활용할 수 있는 상태로 저장
+ */
+
+function existy(x) { return x != null };
+function cat() {
+	var head = _.first(arguments);
+	if (existy(head))
+		return head.concat.apply(head, _.rest(arguments));
+	else
+		return [];
+}
+
+function construct(head, tail) {
+	return cat([head], _.toArray(tail));
+}
+
+function partial2(fun, arg1, arg2){
+	return function(){
+		//밖에 인자1,2와 안에 함수 인자들을 합쳐서 배열로 변경 한 후 fun을 실행
+		var args = cat([arg1, arg2], arguments);
+		return fun.apply(fun, args);
+	}
+}
+
+var div10By2 = partial2(div, 10, 2);
+console.log(div10By2());
+
+
+</script>
+</head>
+<body>
+
+</body>
+</html>
