@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script src="underscore.js"></script>
+<script>
+/*
+ * this를  반환시키면 메서드 체인을 만들 수 있다.
+ */
+
+function createPerson(){
+	var firstName = "";
+	var lastName = "";
+	var age = 0;
+	
+	return {
+		setFirstName: function(fn){
+			firstName = fn;
+			return this;
+		},
+		setLastName: function(ln){
+			lastName = ln;
+			return this;
+		},
+		setAge: function(a){
+			age = a;
+			return this;
+		},
+		toString: function(){
+			return [firstName, lastName, age].join(' ');
+		}
+	};
+}
+
+var p = createPerson()
+		.setFirstName("Mike")
+		.setLastName("Fogue")
+		.setAge(30)
+		.toString();
+
+console.log(p);
+</script>
+</head>
+<body>
+
+</body>
+</html>

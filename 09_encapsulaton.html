@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script src="underscore.js"></script>
+<script>
+/*
+	불변성 객체 만들기
+	1) 불변성 객체는 생성시에 자신의 값을 채운 이후로는 절대 바뀌지 않는다.
+	2) 불변성 객체에 행하는 모든 동작의 결과로 새로운 객체가 반환된다.
+*/
+
+//1. 객체 생성자 정의
+function Point(x,y){
+	this._x = x;
+	this._y = y;
+}
+	
+Point.prototype = {
+	withX: function(val){
+		return new Point(val, this._y);
+	},
+	withY: function(val){
+		return new Point(this._x, val);
+	}
+}
+
+//withX와 withY는 호출시 새로운 인스턴스를 반환
+var p = new Point(0,1);
+
+console.log(p.withX(1000));
+
+//인스턴스 p는 원래 값을 유지한다.
+console.log(p);
+
+//체이닝 api 가능 
+console.log(p.withX(100).withY(-100));
+
+</script>
+</head>
+<body>
+
+</body>
+</html>
